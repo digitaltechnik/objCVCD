@@ -11,7 +11,8 @@
 
 @implementation VCDParser
 
--(NSNumber *)parseHeader {
+-(NSNumber *)parseHeader
+{
     const char *chunk = [_dataChunk UTF8String];
     int len = [_dataChunk length];
     int i = 0;
@@ -31,7 +32,8 @@
     return [NSNumber numberWithInt:i];
 }
 
--(NSNumber *)parseCommandBegin {
+-(NSNumber *)parseCommandBegin
+{
     const char *chunk = [_dataChunk UTF8String];
     int i = 0;
     while(isalnum(chunk[i])) i++;
@@ -47,7 +49,8 @@
     return [NSNumber numberWithInt:i];
 }
 
--(BOOL)parseVar:(NSString *)varDef {
+-(BOOL)parseVar:(NSString *)varDef
+{
   
     NSString *symbol = nil;
     NSString *name = nil;
@@ -75,7 +78,8 @@
     return YES;
 }
 
--(NSNumber *)parseCommand {
+-(NSNumber *)parseCommand
+{
     NSRange range = [_dataChunk rangeOfString:@"$end"];
     if(range.location == NSNotFound)
         return [NSNumber numberWithInt:0];
@@ -92,7 +96,8 @@
 
 }
 
--(NSNumber *)parseTime {
+-(NSNumber *)parseTime
+{
     const char *chunk = [_dataChunk UTF8String];
     
     int i = 0;
@@ -106,7 +111,8 @@
     return [NSNumber numberWithInt:i];
 }
 
--(NSNumber *)parseValue {
+-(NSNumber *)parseValue
+{
     if([_dataChunk length] < 2)
         return [NSNumber numberWithInt:0];
     
@@ -117,7 +123,8 @@
     return [NSNumber numberWithInt:2];
 }
 
--(id)initWithVCD:(VCD *)vcd callback:(void(^)(VCD *))cb {
+-(id)initWithVCD:(VCD *)vcd callback:(void(^)(VCD *))cb
+{
     if(self = [super init]) {
         _dataChunk = [[NSMutableString alloc] init];
         _vcd = vcd;
@@ -155,6 +162,7 @@
 {
     _callback(_vcd);
 }
+
 - (void)connection:(NSURLConnection *)connection
   didFailWithError:(NSError *)error
 {
