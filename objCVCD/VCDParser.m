@@ -49,32 +49,46 @@
     return [NSNumber numberWithInt:i];
 }
 
--(BOOL)parseVar:(NSString *)varDef
-{
-  
-    NSString *symbol = nil;
-    NSString *name = nil;
-    
+-(NSArray *)strTokens:(NSString *)str maxFields:(int)max {
     NSRange range = NSMakeRange(0, 0);
+    NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:max];
     int field = 0;
-    for(int i = 0; i < [varDef length] && field < 3; i++, range.length++) {
-        if(isspace([varDef characterAtIndex:i])) {
-            switch (field) {
-                case 2:
-                    symbol = [varDef substringWithRange:range];
-                    break;
-                default:
-                    break;
-            }
+    for(int i = 0; i < [str length] && field < max - 1; i++, range.length++) {
+        if(isspace([str characterAtIndex:i])) {
+            [result addObject:[str substringWithRange:range]];
             field++;
-            while(isspace([varDef characterAtIndex:i])) i++;
+            while(isspace([str characterAtIndex:i])) i++;
             range = NSMakeRange(i, 0);
         }
     }
     
-    name = [varDef substringFromIndex:range.location];
-    
-    [_vcd defineSignal:name Symbol:symbol];
+    if(range.location < [str length])
+        [result addObject:[str substringFromIndex:range.location]];
+    return result;
+}
+
+-(BOOL)parseVar:(NSString *)varDef
+{
+    NSArray *arr = [self strTokens:varDef maxFields:4];
+    [_vcd defineSignal:[arr objectAtIndex:3] Symbol:[arr objectAtIndex:2]];
+    return [arr count] == 4;
+}
+
+-(BOOL)parseTimeScale:(NSString *)timeScaleDef
+{
+    NSRange unitRange = [timeScaleDef rangeOfCharacterFromSet:[NSCharacterSet letterCharacterSet]];
+    [_vcd setTimeScale:[timeScaleDef intValue]];
+    [_vcd setTimeScaleUnit:[timeScaleDef substringFromIndex:unitRange.location]];
+    return YES;
+}
+
+-(BOOL)parseDate:(NSString *)dateDef
+{
+    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    [format setTimeZone:[NSTimeZone localTimeZone]];
+    //                      Wed Oct 27 17:30:33 2010
+    [format setDateFormat:@"EEE MMM dd HH:mm:ss yyyy"];
+    [_vcd setDate:[format dateFromString:dateDef]];
     return YES;
 }
 
@@ -87,12 +101,29 @@
     NSString *args = [[_dataChunk substringToIndex:range.location] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     //NSLog(@"cmd: %@", _currentCommand);
+    BOOL success = YES;
+    
     if([@"var" isEqualToString:_currentCommand]) {
-        [self parseVar:args];
+        success = [self parseVar:args];
+    }
+    else if([@"timescale" isEqualToString:_currentCommand]) {
+        success = [self parseTimeScale:args];
+    }
+    else if([@"date" isEqualToString:_currentCommand]) {
+        success = [self parseDate:args];
+    }
+    else if([@"version" isEqualToString:_currentCommand]) {
+        [_vcd setVersion:args];
+    }
+    else if([@"scope" isEqualToString:_currentCommand]) {
+        [_vcd setScope:args];
+    }
+    else if(![@[@"upscope", @"enddefinitions"] containsObject:_currentCommand]) {
+        NSLog(@"Unknown Command %@; args: %@", _currentCommand, args);
     }
     
     _parseChunk = @selector(parseHeader);
-    return [NSNumber numberWithInt:range.location + range.length];
+    return [NSNumber numberWithInt:success ? range.location + range.length : -1];
 
 }
 

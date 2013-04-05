@@ -13,9 +13,13 @@
 
 @implementation VCD
 
--(NSDictionary *)signals {
-    return _signalsByName;
-}
+@synthesize timeScale = _timeScale;
+@synthesize timeScaleUnit = _timeScaleUnit;
+@synthesize date = _date;
+@synthesize signals = _signalsByName;
+@synthesize version = _version;
+@synthesize scope = _scope;
+
 
 +(void)loadWithPath:(NSString *)path callback:(void(^)(VCD *))cb {
     NSURL *_url = [[NSURL alloc] initFileURLWithPath:path isDirectory:false];

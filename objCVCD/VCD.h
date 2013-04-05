@@ -13,9 +13,19 @@
 @public
     NSMutableDictionary *_signalsBySymbol;
     NSMutableDictionary *_signalsByName;
+    
+    NSInteger _timeScale;
+    NSString *_timeScaleUnit;
+    NSDate *_date;
+    NSString *_version;
+    NSString *_scope;
 }
 @property (readonly) NSDictionary *signals;
-@property (readonly) NSInteger count;
+@property (nonatomic) NSInteger timeScale;
+@property (nonatomic) NSString *timeScaleUnit;
+@property (nonatomic) NSDate *date;
+@property (nonatomic) NSString *version;
+@property (nonatomic) NSString *scope;
 
 +(void)loadWithPath:(NSString *)path callback:(void(^)(VCD *))cb;
 +(void)loadWithURL:(NSURL *)url callback:(void (^)(VCD *))cb;
