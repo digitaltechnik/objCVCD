@@ -34,6 +34,7 @@
 -(id)init;
 -(VCDSignal *)signalWithName:(NSString *)name;
 
--(void)defineSignal:(NSString *)name Symbol:(NSString *)symbol;
+
+-(void)defineSignalWithType:(NSString *)type Bits:(int)bits Name:(NSString *)name Symbol:(NSString *)symbol;
 -(void)defineSignalChange:(NSString *)symbol Time:(int)time Value:(NSString *)value;
 @end

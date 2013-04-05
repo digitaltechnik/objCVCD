@@ -95,9 +95,20 @@
     }
 }
 
+-(void) testParsedVCD
+{
+    [self testLoadFileVerySimple];
+    
+    STAssertEquals([_vcd timeScale], 1, @"TimeScale not correctly parsed");
+    STAssertEqualObjects([_vcd timeScaleUnit], @"ns", @"TimeScaleUnit not correctly parsed");
+    STAssertEqualObjects([_vcd version], @"ModelSim Version 6.5c", @"Version not correctly parsed.");
+    NSDate *date = [[NSDate alloc] initWithTimeIntervalSince1970:1288193433];
+    STAssertEqualObjects([_vcd date], date, @"Date is not well formated");
+}
+
 -(void) testSignalAddValues
 {
-    VCDSignal *signal = [[VCDSignal alloc] initWithName:@"Test" Symbol:@"T"];
+    VCDSignal *signal = [[VCDSignal alloc] initWithType:@"wire" Bits:0 Name:@"Test" Symbol:@"T"];
     [signal addValue:@"v2" AtTime:2];
     [signal addValue:@"v0" AtTime:0];
     [signal addValue:@"v3" AtTime:3];
@@ -115,7 +126,7 @@
 
 -(void) testSignalSearchExact
 {
-    VCDSignal *signal = [[VCDSignal alloc] initWithName:@"Test" Symbol:@"T"];
+    VCDSignal *signal = [[VCDSignal alloc] initWithType:@"wire" Bits:0 Name:@"Test" Symbol:@"T"];
     [signal addValue:@"v0" AtTime:0];
     [signal addValue:@"v75" AtTime:75];
     [signal addValue:@"v100" AtTime:100];
@@ -127,7 +138,7 @@
 
 -(void) testSignalSearchBetween
 {
-    VCDSignal *signal = [[VCDSignal alloc] initWithName:@"Test" Symbol:@"T"];
+    VCDSignal *signal = [[VCDSignal alloc] initWithType:@"wire" Bits:0 Name:@"Test" Symbol:@"T"];
     [signal addValue:@"v0" AtTime:0];
     [signal addValue:@"v75" AtTime:75];
     [signal addValue:@"v100" AtTime:100];

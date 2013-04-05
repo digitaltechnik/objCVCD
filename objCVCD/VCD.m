@@ -83,8 +83,8 @@
     return [_signalsByName objectForKey:symbol];
 }
 
--(void)defineSignal:(NSString *)name Symbol:(NSString *)symbol {
-    VCDSignal *signal = [[VCDSignal alloc] initWithName:name Symbol:symbol];
+-(void)defineSignalWithType:(NSString *)type Bits:(int)bits Name:(NSString *)name Symbol:(NSString *)symbol {
+    VCDSignal *signal = [[VCDSignal alloc] initWithType:type Bits:bits Name:name Symbol:symbol];
     [_signalsByName setObject:signal forKey:name];
     [_signalsBySymbol setObject:signal forKey:symbol];
 }

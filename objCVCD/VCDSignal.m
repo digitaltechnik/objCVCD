@@ -33,12 +33,19 @@ static NSInteger search(NSArray *array, NSInteger time) {
 @implementation VCDSignal
 @synthesize name = _name;
 @synthesize symbol = _symbol;
+@synthesize type = _type;
+@synthesize bits = _bits;
 
--(id)initWithName:(NSString *)name Symbol:(NSString *)symbol {
+-(id)initWithType:(NSString *)type Bits:(int)bits Name:(NSString *)name Symbol:(NSString *)symbol {
     if(self = [super init]) {
         _values = [[NSMutableArray alloc] init];
         _symbol = symbol;
         _name = name;
+        _bits = bits;
+        if([@"wire" isEqualToString:type])
+            _type = VCD_TYPE_WIRE;
+        else
+            _type = VCD_TYPE_UNKOWN;
     }
     return self;
 }

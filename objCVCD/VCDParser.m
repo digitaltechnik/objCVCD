@@ -70,7 +70,7 @@
 -(BOOL)parseVar:(NSString *)varDef
 {
     NSArray *arr = [self strTokens:varDef maxFields:4];
-    [_vcd defineSignal:[arr objectAtIndex:3] Symbol:[arr objectAtIndex:2]];
+    [_vcd defineSignalWithType:[arr objectAtIndex:0] Bits:[[arr objectAtIndex:1] intValue] Name:[arr objectAtIndex:3] Symbol:[arr objectAtIndex:2]];
     return [arr count] == 4;
 }
 
@@ -85,6 +85,7 @@
 -(BOOL)parseDate:(NSString *)dateDef
 {
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    [format setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"US"]];
     [format setTimeZone:[NSTimeZone localTimeZone]];
     //                      Wed Oct 27 17:30:33 2010
     [format setDateFormat:@"EEE MMM dd HH:mm:ss yyyy"];
