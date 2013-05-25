@@ -42,9 +42,11 @@
 
 +(NSDictionary *)loadAvailableSamples {
     NSError *e = nil;
-    NSURLRequest *req = [NSURLRequest requestWithURL:[[NSURL alloc] initWithString:EXAMPLE_LIST_URL]];
+    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:[[NSURL alloc] initWithString:EXAMPLE_LIST_URL]];
+    [req setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
     
     NSData *data = [NSURLConnection sendSynchronousRequest:req returningResponse:nil error:&e];
+    
     id json;
     
     if(e == nil)
