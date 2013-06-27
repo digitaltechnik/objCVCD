@@ -85,7 +85,7 @@ for(VCDSignal *signal in [[vcd signals] allValues]) {
 ```objC
 VCDSignal *signal = nil;
 
-// Magically loading a VCD Signal
+// Magically loads VCD Signal
 // ...
 
 // Access value at specific time.
