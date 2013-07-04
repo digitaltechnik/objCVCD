@@ -1,7 +1,7 @@
 objCVCD
 =======
 
-A VCD parser used in one of my lectures. VCD stands for Value Change Dump.
+A VCD parser aiming to support IEEE 1364-1995.
 
 
 Usage
@@ -85,7 +85,7 @@ for(VCDSignal *signal in [[vcd signals] allValues]) {
 ```objC
 VCDSignal *signal = nil;
 
-// Magically loading a VCD Signal
+// Magically loads VCD Signal
 // ...
 
 // Access value at specific time.
