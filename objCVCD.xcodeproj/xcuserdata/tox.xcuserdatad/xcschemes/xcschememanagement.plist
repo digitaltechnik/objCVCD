@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>objCVCDDemo.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 		<key>objCVCDTest.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -17,6 +22,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>8E2E151D177C38DA002F1070</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>8E74A8F6170D7AC7007F4DCC</key>
 		<dict>
 			<key>primary</key>

@@ -76,6 +76,8 @@ static NSInteger search(NSArray *array, NSInteger time) {
 }
 
 -(VCDValue *)valueAtTime:(NSInteger) time {
+    if([_values count] == 0)
+        return nil;
     return [_values objectAtIndex:search(_values, time)];
 }
 @end

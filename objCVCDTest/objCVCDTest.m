@@ -55,6 +55,8 @@
     
     if(_vcd == nil)
         STFail(@"Error loading VCD file!");
+    if([[_vcd signals] count] == 0)
+        STFail(@"VCD Object is empty!");
 }
 
 - (void) testLoadFileSimple

@@ -9,7 +9,7 @@
 #import "VCD.h"
 #import "VCDParser.h"
 
-#define EXAMPLE_LIST_URL @"http://eboland.de:8080/vcd.json"
+#define EXAMPLE_LIST_URL @"http://eboland.de/vcd/vcd.json"
 
 @implementation VCD
 
