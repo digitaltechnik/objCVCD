@@ -87,6 +87,27 @@
         STFail(@"Error loading VCD file!");
 }
 
+- (void) testLoadFileNormal
+{
+    ASYNC;
+    NSString *filePath = [[NSBundle bundleForClass: [self class]] pathForResource:@"normal" ofType:@"vcd"];
+    [VCD loadWithPath:filePath callback:^(VCD *vcd) {
+        _vcd = vcd;
+        ASYNC_DONE;
+    }];
+    ASYNC_WAIT;
+    
+    if(_vcd == nil) {
+        STFail(@"Error loading VCD file!");
+        return;
+    }
+    
+    VCDSignal *sig = _vcd.signals.allValues.lastObject;
+    STAssertNotNil(sig, @"sig is not null");
+    STAssertNotNil(sig.name, @"sig.name is not null");
+    STAssertNotNil([sig valueAtTime:0], @"[sig valueAtTime returns nil");
+}
+
 
 -(void) testParsedSignalSymbols
 {

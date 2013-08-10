@@ -149,10 +149,15 @@
         return [NSNumber numberWithInt:0];
     
     NSString *value = [_dataChunk substringToIndex:1];
-    NSString *symbol = [_dataChunk substringWithRange:NSMakeRange(1, 1)];
+    NSRange lineRange = [_dataChunk rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]];
+    
+    if(lineRange.location == NSNotFound)
+        return [NSNumber numberWithInt:0];
+    
+    NSString *symbol = [_dataChunk substringWithRange:NSMakeRange(1, lineRange.location - 1)];
     [_vcd defineSignalChange:symbol Time:_currentTime Value:value];
     _parseChunk = @selector(parseHeader);
-    return [NSNumber numberWithInt:2];
+    return [NSNumber numberWithInt:lineRange.location];
 }
 
 -(id)initWithVCD:(VCD *)vcd callback:(void(^)(VCD *))cb
