@@ -35,6 +35,7 @@
 		8E74A938170D8252007F4DCC /* VCDValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E74A90F170D7AF3007F4DCC /* VCDValue.m */; };
 		8E74A93A170D898E007F4DCC /* simple.vcd in Resources */ = {isa = PBXBuildFile; fileRef = 8E74A939170D898E007F4DCC /* simple.vcd */; };
 		8E74A93D170D8D79007F4DCC /* very_simple.vcd in Resources */ = {isa = PBXBuildFile; fileRef = 8E74A93C170D8D79007F4DCC /* very_simple.vcd */; };
+		8ED58E7A1797EE3E00BDE834 /* normal.vcd in Resources */ = {isa = PBXBuildFile; fileRef = 8ED58E791797EE3E00BDE834 /* normal.vcd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -50,7 +51,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		8E2E151E177C38DA002F1070 /* objCVCDDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = objCVCDDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E2E151E177C38DA002F1070 /* objCVCDExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = objCVCDExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E2E1521177C38DB002F1070 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8E2E1525177C38DB002F1070 /* objCVCDDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "objCVCDDemo-Info.plist"; sourceTree = "<group>"; };
 		8E2E1527177C38DB002F1070 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -85,6 +86,7 @@
 		8E74A929170D7C6F007F4DCC /* objCVCDTest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "objCVCDTest-Prefix.pch"; sourceTree = "<group>"; };
 		8E74A939170D898E007F4DCC /* simple.vcd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = simple.vcd; path = objCVCDTest/simple.vcd; sourceTree = SOURCE_ROOT; };
 		8E74A93C170D8D79007F4DCC /* very_simple.vcd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = very_simple.vcd; sourceTree = "<group>"; };
+		8ED58E791797EE3E00BDE834 /* normal.vcd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = normal.vcd; path = ../../../../normal.vcd; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,7 +166,7 @@
 			children = (
 				8E74A8F7170D7AC7007F4DCC /* libobjCVCD.a */,
 				8E74A91A170D7C6F007F4DCC /* objCVCDTest.octest */,
-				8E2E151E177C38DA002F1070 /* objCVCDDemo.app */,
+				8E2E151E177C38DA002F1070 /* objCVCDExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -199,6 +201,7 @@
 		8E74A920170D7C6F007F4DCC /* objCVCDTest */ = {
 			isa = PBXGroup;
 			children = (
+				8ED58E791797EE3E00BDE834 /* normal.vcd */,
 				8E74A939170D898E007F4DCC /* simple.vcd */,
 				8E74A93C170D8D79007F4DCC /* very_simple.vcd */,
 				8E74A926170D7C6F007F4DCC /* objCVCDTest.h */,
@@ -229,9 +232,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8E2E151D177C38DA002F1070 /* objCVCDDemo */ = {
+		8E2E151D177C38DA002F1070 /* objCVCDExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8E2E153D177C38DB002F1070 /* Build configuration list for PBXNativeTarget "objCVCDDemo" */;
+			buildConfigurationList = 8E2E153D177C38DB002F1070 /* Build configuration list for PBXNativeTarget "objCVCDExample" */;
 			buildPhases = (
 				8E2E151A177C38DA002F1070 /* Sources */,
 				8E2E151B177C38DA002F1070 /* Frameworks */,
@@ -241,9 +244,9 @@
 			);
 			dependencies = (
 			);
-			name = objCVCDDemo;
+			name = objCVCDExample;
 			productName = objCVCDDemo;
-			productReference = 8E2E151E177C38DA002F1070 /* objCVCDDemo.app */;
+			productReference = 8E2E151E177C38DA002F1070 /* objCVCDExample.app */;
 			productType = "com.apple.product-type.application";
 		};
 		8E74A8F6170D7AC7007F4DCC /* objCVCD */ = {
@@ -304,7 +307,7 @@
 			targets = (
 				8E74A8F6170D7AC7007F4DCC /* objCVCD */,
 				8E74A919170D7C6F007F4DCC /* objCVCDTest */,
-				8E2E151D177C38DA002F1070 /* objCVCDDemo */,
+				8E2E151D177C38DA002F1070 /* objCVCDExample */,
 			);
 		};
 /* End PBXProject section */
@@ -329,6 +332,7 @@
 				8E74A925170D7C6F007F4DCC /* InfoPlist.strings in Resources */,
 				8E74A93A170D898E007F4DCC /* simple.vcd in Resources */,
 				8E74A93D170D8D79007F4DCC /* very_simple.vcd in Resources */,
+				8ED58E7A1797EE3E00BDE834 /* normal.vcd in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -565,7 +569,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8E2E153D177C38DB002F1070 /* Build configuration list for PBXNativeTarget "objCVCDDemo" */ = {
+		8E2E153D177C38DB002F1070 /* Build configuration list for PBXNativeTarget "objCVCDExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8E2E153B177C38DB002F1070 /* Debug */,
