@@ -11,13 +11,13 @@
 @interface VCDValue : NSObject {
 @private
     NSInteger _time;
-    NSString *_value;
+    char _value[5];
     VCDValue *_next;
 }
 @property (readonly, nonatomic) NSInteger time;
-@property (readonly, nonatomic) NSString *value;
+@property (readonly, nonatomic) char *value;
 @property () VCDValue *next;
 
 
--(id)initWithValue:(NSString *)value AtTime:(NSInteger)time;
+-(id)initWithValue:(char *)value AtTime:(NSInteger)time;
 @end

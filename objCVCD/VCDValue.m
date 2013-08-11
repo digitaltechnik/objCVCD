@@ -10,15 +10,23 @@
 
 @implementation VCDValue
 @synthesize time = _time;
-@synthesize value = _value;
 @synthesize next = _next;
 
--(id)initWithValue:(NSString *)value AtTime:(NSInteger)time {
+-(id)initWithValue:(char *)value AtTime:(NSInteger)time {
     if(self = [super init]) {
         _time = time;
-        _value = value;
+        _value[0] = '\0';
         _next = nil;
     }
     return self;
 }
+
+- (char *)value {
+    return _value;
+}
+
+- (void)setValue:(const char *)value {
+    strncpy(_value, value, sizeof _value - 1);
+}
+
 @end

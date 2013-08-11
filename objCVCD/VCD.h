@@ -36,5 +36,5 @@
 
 
 -(void)defineSignalWithType:(NSString *)type Bits:(int)bits Name:(NSString *)name Symbol:(NSString *)symbol;
--(void)defineSignalChange:(NSString *)symbol Time:(int)time Value:(NSString *)value;
+-(void)defineSignalChange:(NSString *)symbol Time:(int)time Value:(char *)value;
 @end

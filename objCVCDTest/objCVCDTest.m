@@ -132,17 +132,17 @@
 -(void) testSignalAddValues
 {
     VCDSignal *signal = [[VCDSignal alloc] initWithType:@"wire" Bits:0 Name:@"Test" Symbol:@"T"];
-    [signal addValue:@"v2" AtTime:2];
-    [signal addValue:@"v0" AtTime:0];
-    [signal addValue:@"v3" AtTime:3];
-    [signal addValue:@"v4" AtTime:4];
-    [signal addValue:@"v1" AtTime:1];
+    [signal addValue:"v2" AtTime:2];
+    [signal addValue:"v0" AtTime:0];
+    [signal addValue:"v3" AtTime:3];
+    [signal addValue:"v4" AtTime:4];
+    [signal addValue:"v1" AtTime:1];
     
     VCDValue *v = [signal valueAtTime:0];
     int i;
     for(i = 0; v != nil; i++, v = [v next]) {
-        NSString *expected = [NSString stringWithFormat:@"v%d", i];
-        STAssertEqualObjects([v value], expected, @"Wrong value!");
+        const char *expected = [[NSString stringWithFormat:@"v%d", i] UTF8String];
+        STAssertEquals([v value], expected, @"Wrong value!");
     }
     STAssertEquals(i, 5, @"Didn't iterator all objects!");
 }
@@ -150,9 +150,9 @@
 -(void) testSignalSearchExact
 {
     VCDSignal *signal = [[VCDSignal alloc] initWithType:@"wire" Bits:0 Name:@"Test" Symbol:@"T"];
-    [signal addValue:@"v0" AtTime:0];
-    [signal addValue:@"v75" AtTime:75];
-    [signal addValue:@"v100" AtTime:100];
+    [signal addValue:"v0" AtTime:0];
+    [signal addValue:"v75" AtTime:75];
+    [signal addValue:"v100" AtTime:100];
     
     STAssertEquals([[signal valueAtTime:0] time], 0, @"");
     STAssertEquals([[signal valueAtTime:75] time], 75, @"");
@@ -162,9 +162,9 @@
 -(void) testSignalSearchBetween
 {
     VCDSignal *signal = [[VCDSignal alloc] initWithType:@"wire" Bits:0 Name:@"Test" Symbol:@"T"];
-    [signal addValue:@"v0" AtTime:0];
-    [signal addValue:@"v75" AtTime:75];
-    [signal addValue:@"v100" AtTime:100];
+    [signal addValue:"v0" AtTime:0];
+    [signal addValue:"v75" AtTime:75];
+    [signal addValue:"v100" AtTime:100];
     
     STAssertEquals([[signal valueAtTime:5] time], 0, @"");
     STAssertEquals([[signal valueAtTime:80] time], 75, @"");

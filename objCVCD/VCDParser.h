@@ -18,6 +18,9 @@ typedef void (^VCDCompleteCallback)(VCD *vcd);
     NSMutableString *_dataChunk;
     VCD *_vcd;
     SEL _parseChunk;
+    const char *_chunk;
+    int _chunkLen;
+
     
     VCDCompleteCallback _callback;
     NSString *_currentCommand;

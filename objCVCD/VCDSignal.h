@@ -29,5 +29,5 @@ enum SignalType {
 -(id)initWithType:(NSString *)type Bits:(int)bits Name:(NSString *)name Symbol:(NSString *)symbol;
 -(VCDValue *)valueAtTime:(NSInteger) time;
 
--(void)addValue:(NSString *)value AtTime:(NSInteger)time;
+-(void)addValue:(char *)value AtTime:(NSInteger)time;
 @end

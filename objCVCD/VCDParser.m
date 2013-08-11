@@ -13,17 +13,15 @@
 
 -(NSNumber *)parseHeader
 {
-    const char *chunk = [_dataChunk UTF8String];
-    int len = [_dataChunk length];
     int i = 0;
-    while(isspace(chunk[i])) i++;
-    if(i == len)
+    while(isspace(_chunk[i])) i++;
+    if(i == _chunkLen)
         return [NSNumber numberWithInt:i];
-    else if(chunk[i] == '$') {
+    else if(_chunk[i] == '$') {
         i++;
         _parseChunk = @selector(parseCommandBegin);
     }
-    else if(chunk[i] == '#') {
+    else if(_chunk[i] == '#') {
         i++;
         _parseChunk = @selector(parseTime);
     }
@@ -34,12 +32,11 @@
 
 -(NSNumber *)parseCommandBegin
 {
-    const char *chunk = [_dataChunk UTF8String];
     int i = 0;
-    while(isalnum(chunk[i])) i++;
+    while(isalnum(_chunk[i])) i++;
     
-    if(isspace(chunk[i])) {
-        _currentCommand = [[NSString alloc] initWithBytes:chunk length:i encoding:NSUTF8StringEncoding];
+    if(isspace(_chunk[i])) {
+        _currentCommand = [[NSString alloc] initWithBytes:_chunk length:i encoding:NSUTF8StringEncoding];
         if([@"end" isEqualToString:_currentCommand]
            || [@"dumpvars" isEqualToString:_currentCommand])
             _parseChunk = @selector(parseHeader);
@@ -95,11 +92,12 @@
 
 -(NSNumber *)parseCommand
 {
-    NSRange range = [_dataChunk rangeOfString:@"$end"];
-    if(range.location == NSNotFound)
+    const char *end = strstr(_chunk, "$end");
+    if(end == NULL)
         return [NSNumber numberWithInt:0];
     
-    NSString *args = [[_dataChunk substringToIndex:range.location] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    unsigned int length = end - _chunk;
+    NSString *args = [[[NSString alloc] initWithBytes:_chunk length:length encoding:NSUTF8StringEncoding] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     //NSLog(@"cmd: %@", _currentCommand);
     BOOL success = YES;
@@ -124,20 +122,18 @@
     }
     
     _parseChunk = @selector(parseHeader);
-    return [NSNumber numberWithInt:success ? range.location + range.length : -1];
+    return [NSNumber numberWithInt:success ? length + 4 : -1];
 
 }
 
 -(NSNumber *)parseTime
 {
-    const char *chunk = [_dataChunk UTF8String];
-    
     int i = 0;
-    while(isnumber(chunk[i])) i++;
-    if(!isspace(chunk[i]))
+    while(isnumber(_chunk[i])) i++;
+    if(!isspace(_chunk[i]))
         return [NSNumber numberWithInt:0];
     
-    _currentTime = atoi(chunk);
+    _currentTime = atoi(_chunk);
     
     _parseChunk = @selector(parseHeader);
     return [NSNumber numberWithInt:i];
@@ -145,19 +141,23 @@
 
 -(NSNumber *)parseValue
 {
-    if([_dataChunk length] < 2)
+    if(_chunkLen < 2)
         return [NSNumber numberWithInt:0];
     
-    NSString *value = [_dataChunk substringToIndex:1];
-    NSRange lineRange = [_dataChunk rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]];
+    // TODO this works for one
+    char value[] = {_chunk[0], 0};
+    int i = 1;
+    while(!isspace(_chunk[i]) && _chunk[i] != '\n') {
+        if(_chunk[i] == '\0')
+            return [NSNumber numberWithInt:0];
+        i++;
+    }
+
     
-    if(lineRange.location == NSNotFound)
-        return [NSNumber numberWithInt:0];
-    
-    NSString *symbol = [_dataChunk substringWithRange:NSMakeRange(1, lineRange.location - 1)];
+    NSString *symbol = [[NSString alloc] initWithBytes:_chunk + 1 length:i-1 encoding:NSUTF8StringEncoding];
     [_vcd defineSignalChange:symbol Time:_currentTime Value:value];
     _parseChunk = @selector(parseHeader);
-    return [NSNumber numberWithInt:lineRange.location];
+    return [NSNumber numberWithInt:i];
 }
 
 -(id)initWithVCD:(VCD *)vcd callback:(void(^)(VCD *))cb
@@ -173,26 +173,33 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
-    int len, offset = 0, chunkLen;
-    const char *chunk;
+    int consumed = 0;
+    unsigned int offset = 0;
     
     [_dataChunk appendString:[[NSString alloc] initWithData:data
                                                    encoding:NSUTF8StringEncoding]];
-    offset = 0;
-    chunk = [_dataChunk UTF8String];
-    chunkLen = [_dataChunk length];
-    
+
+    _chunk = [_dataChunk UTF8String];
+    _chunkLen = [_dataChunk length];
     do {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        if((len = [[self performSelector:_parseChunk] intValue]) < 0) {
+        if((consumed = [[self performSelector:_parseChunk] intValue]) < 0) {
 #pragma clang diagnostic pop
             NSLog(@"Parser Error!");
             [connection cancel];
             return;
         }
-        [_dataChunk deleteCharactersInRange:NSMakeRange(0, len)];
-    } while(len > 0);
+        else {
+            _chunk += consumed;
+            offset += consumed;
+            _chunkLen -= consumed;
+        }
+        //NSLog(@"%i %@", offset, [_dataChunk substringWithRange:NSMakeRange(offset, 20)]);
+
+    } while(consumed > 0);
+    
+    [_dataChunk deleteCharactersInRange:NSMakeRange(0, offset)];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection

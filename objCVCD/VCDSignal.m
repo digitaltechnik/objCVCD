@@ -50,7 +50,7 @@ static NSInteger search(NSArray *array, NSInteger time) {
     return self;
 }
 
--(void)addValue:(NSString *)value AtTime:(NSInteger)time {
+-(void)addValue:(char *)value AtTime:(NSInteger)time {
     VCDValue *v = [[VCDValue alloc] initWithValue:value AtTime:time];
     
     

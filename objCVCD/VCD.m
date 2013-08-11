@@ -91,7 +91,7 @@
     [_signalsBySymbol setObject:signal forKey:symbol];
 }
 
--(void)defineSignalChange:(NSString *)symbol Time:(int)time Value:(NSString *)value {
+-(void)defineSignalChange:(NSString *)symbol Time:(int)time Value:(char *)value {
     VCDSignal *signal = [_signalsBySymbol objectForKey:symbol];
     [signal addValue:value AtTime:time];
 }
