@@ -15,18 +15,23 @@
 -(id)initWithValue:(char *)value AtTime:(NSInteger)time {
     if(self = [super init]) {
         _time = time;
-        _value[0] = '\0';
         _next = nil;
+        _value[sizeof _value - 1] = '\0';
+        [self setCValue:value];
     }
     return self;
 }
 
-- (char *)value {
+- (char *)cValue {
     return _value;
 }
 
-- (void)setValue:(const char *)value {
+- (void)setCValue:(const char *)value {
     strncpy(_value, value, sizeof _value - 1);
+}
+
+- (NSString *)value {
+    return [[NSString alloc] initWithCString:_value encoding:NSUTF8StringEncoding];
 }
 
 @end

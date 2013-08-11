@@ -15,9 +15,9 @@
     VCDValue *_next;
 }
 @property (readonly, nonatomic) NSInteger time;
-@property (readonly, nonatomic) char *value;
+@property (readonly, nonatomic) char *cValue;
+@property (readonly, nonatomic) NSString *value;
 @property () VCDValue *next;
-
 
 -(id)initWithValue:(char *)value AtTime:(NSInteger)time;
 @end
