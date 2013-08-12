@@ -46,6 +46,8 @@ static NSInteger search(NSArray *array, NSInteger time) {
             _type = VCD_TYPE_WIRE;
         else
             _type = VCD_TYPE_UNKOWN;
+        _sorted = true;
+        _lastTime = -1;
     }
     return self;
 }
@@ -53,31 +55,44 @@ static NSInteger search(NSArray *array, NSInteger time) {
 -(void)addValue:(char *)value AtTime:(NSInteger)time {
     VCDValue *v = [[VCDValue alloc] initWithValue:value AtTime:time];
     
-    
-    // Damn slow, we should do smth else.
-    [_values addObject:v];
-    [_values sortUsingComparator:^NSComparisonResult(VCDValue *v1, VCDValue *v2) {
-        if([v1 time] < [v2 time])
-            return NSOrderedAscending;
-        else if([v1 time] > [v2 time])
-            return NSOrderedDescending;
-        else
-            return NSOrderedSame;
-    }];
-    
-    // Rebuild list
-    NSEnumerator *e = [_values objectEnumerator];
-    VCDValue *ov = [e nextObject];
-    while (v = [e nextObject]) {
-        [ov setNext: v];
-        ov = v;
+    if(_lastTime < time || _sorted == false) {
+        _sorted = false;
     }
-    [[_values lastObject] setNext:nil];
+    else {
+        VCDValue *ov = [_values lastObject];
+        [ov setNext:v];
+    }
+    [_values addObject:v];
+    _lastTime = time;
 }
 
 -(VCDValue *)valueAtTime:(NSInteger) time {
     if([_values count] == 0)
         return nil;
+    
+    // If data isn't sorted, do that now
+    if(_sorted == false) {
+        [_values sortUsingComparator:^NSComparisonResult(VCDValue *v1, VCDValue *v2) {
+            if([v1 time] < [v2 time])
+                return NSOrderedAscending;
+            else if([v1 time] > [v2 time])
+                return NSOrderedDescending;
+            else
+                return NSOrderedSame;
+        }];
+        
+        // Rebuild list
+
+        NSEnumerator *e = [_values objectEnumerator];
+        VCDValue *v, *ov = [e nextObject];
+        while (v = [e nextObject]) {
+            [ov setNext: v];
+            ov = v;
+        }
+        [[_values lastObject] setNext:nil];
+        
+        _sorted = true;
+    }
     return [_values objectAtIndex:search(_values, time)];
 }
 @end

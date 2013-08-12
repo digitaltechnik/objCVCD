@@ -16,22 +16,22 @@
     if(self = [super init]) {
         _time = time;
         _next = nil;
-        _value[sizeof _value - 1] = '\0';
+        _cValue[sizeof _cValue - 1] = '\0';
         [self setCValue:value];
     }
     return self;
 }
 
 - (char *)cValue {
-    return _value;
+    return _cValue;
 }
 
 - (void)setCValue:(const char *)value {
-    strncpy(_value, value, sizeof _value - 1);
+    strncpy(_cValue, value, sizeof _cValue - 1);
 }
 
 - (NSString *)value {
-    return [[NSString alloc] initWithCString:_value encoding:NSUTF8StringEncoding];
+    return [[NSString alloc] initWithCString:_cValue encoding:NSUTF8StringEncoding];
 }
 
 @end

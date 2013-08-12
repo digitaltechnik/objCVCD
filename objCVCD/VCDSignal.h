@@ -20,6 +20,8 @@ enum SignalType {
     NSInteger _bits;
     enum SignalType _type;
     NSMutableArray *_values;
+    BOOL _sorted;
+    int _lastTime;
 }
 @property (readonly, nonatomic) NSString *name;
 @property (readonly, nonatomic) NSString *symbol;

@@ -11,7 +11,7 @@
 @interface VCDValue : NSObject {
 @private
     NSInteger _time;
-    char _value[5];
+    char _cValue[5];
     VCDValue *_next;
 }
 @property (readonly, nonatomic) NSInteger time;
