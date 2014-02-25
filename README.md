@@ -93,7 +93,9 @@ VCDSignal *signal = nil;
 VCDValue *v = [signal valueAtTime:500];
 
 NSLog(@"First ValueChange at %d", [v time]);
-// The VCDValue will be the very first value before the given time.
+// The VCDValue will be the value current value at that point in time.
+// This means valueAtTime will search for the very next value before the
+// given time.
 // Therefore, [v time] will be lesser equal 500.
 
 // Iterate through values:
