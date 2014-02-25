@@ -50,6 +50,12 @@ for(NSString title in [samples allKeys]) {
 Please keep in mind, that loadAvailableSamples uses blocking I/O.
 
 #### Elements of VCD:
+Notes:
+
+* ```[VCD ...]``` Class Method
+* ```[vcd ...]``` Object Method
+
+Functions:
 
 * ```[VCD loadWithPath:path callback:^(VCD *vcd) { /* ... */}]```: Loads VCD from NSString path and calls callback
 * ```[VCD loadWithURL:url callback:^(VCD *vcd) { /* ... */}]```: Loads VCD from NSURL and calls callback
@@ -78,7 +84,7 @@ for(VCDSignal *signal in [[vcd signals] allValues]) {
 * ```[signal name]```: returns NSString name of signal
 * ```[signal symbol]```: returns NSString symbol of signal
 * ```[signal symbol]```: returns NSString symbol of signal
-* ```[vcd valueAtTime:time]```: returns value at specific time.
+* ```[signal valueAtTime:time]```: returns value at specific time.
 
 ### Accessing Signal Values
 
